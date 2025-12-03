@@ -1,2 +1,106 @@
-# AIYang_banana
-Banana 并发节点
+-## Banana2 并发节点（AIYang007_banana2_Concurrent）
+-
+-独立的 **Banana2 并发图像生成节点插件**，支持多图输入、并发请求、重试机制、超时控制，以及（可选）智能放大 + OSS 上传。
+-
+-## 功能特性
+-
+- ✅ **多图输入支持**：通过文本格式输入多个图片 URL（每行一个），所有图片会作为一个任务的多图输入
+- ✅ **并发请求**：支持同时发起多个独立任务，每个任务都包含完整的多图输入
+- ✅ **并发间隔延迟**：可配置请求之间的延迟间隔，避免瞬间同时发送导致服务端限流
+- ✅ **重试机制**：单次请求失败后可自动重试
+- ✅ **超时控制**：支持单次请求超时和总超时时间设置
+- ✅ **可选智能放大**：在上传 OSS 之前可对图片进行 2x/4x/6x 放大（RealESRGAN / Gigapixel / 传统 LANCZOS 回退）  
+- ✅ **OSS 自动上传**：支持将生成图片（可选放大后）上传到阿里云 OSS，并通过 `image_urls/valid_urls` 输出 OSS URL  
+- ✅ **独立运行**：所有代码都在本目录内，可单独复制到 `custom_nodes` 目录使用  
+-
+-## 安装
+-
+-将本目录（`AIYang_banana`）复制到 ComfyUI 的 `custom_nodes` 目录下即可。  
+-
+-## 使用方法
+-
+-### 基本参数
+-
+- **prompt**: 提示词文本
+- **image_urls_text**: 图片 URL 列表（多行文本，每行一个 URL）
+- **concurrency**: 并发数（1-100，默认 3）
+- **request_delay**: 并发请求之间的延迟间隔（秒，默认 0.5）
+- **retry_times**: 失败重试次数（1-10，默认 1）
+- **single_timeout**: 单次请求超时时间（秒，默认 300）
+- **total_timeout**: 总超时时间（秒，默认 600）
+-
+-### 放大相关参数
+-
+- **upscale_factor**:  
+  - `1x (不放大)`：不开启放大，原图直接作为输出 / 上传  
+  - `2x / 4x / 6x`：启用智能放大，顺序尝试：  
+    - RealESRGAN（需要安装 `realesrgan` 依赖）  
+    - Gigapixel AI（需本地安装并正确配置路径）  
+    - 若两者都不可用，则回退为传统 LANCZOS 高质量放大  
+- **gigapixel_model**: Gigapixel AI 放大模型名称（仅在配置了 Gigapixel AI 时生效）  
+-
+-放大流程为：**生成图片 →（可选）放大 → 以放大后的尺寸输出到 `images`，并上传到 OSS（如启用）**。
+-
+-### 输出
+-
+- **responses**：每个任务的完整响应 JSON（数组格式）
+- **statuses**：每个任务的状态（数组格式：`success` / `error` / `no_image` / `timeout_total`），与并发数量一一对应  
+- **image_urls**：二维数组，`image_urls[i]` 对应第 `i` 个并发任务的全部图片 URL：  
+  - 未启用 OSS 上传时：  
+    - 如果 Banana 原始返回的是 HTTP 图片 URL，则这里是原始 HTTP URL  
+    - 如果 Banana 仅返回 base64 图像，则会转成 `data:image/...;base64,...` 的 data URL  
+  - 启用 OSS 上传且上传成功时：  
+    - 这里会被 **OSS 返回的图片 URL 覆盖**（与任务一一对应）  
+- **valid_urls**：按照任务顺序展开的一维图片 URL 列表（逻辑与 `image_urls` 相同，只是拍平成一维数组）  
+- **images**：ComfyUI IMAGE 类型，包含所有返回的图像（若启用放大，则为放大后的图像）  
+-
+-## 并发逻辑说明
+-
+-1. **多图输入**：`image_urls_text` 中的多个 URL 会被打包成一个任务的多图输入  
+-2. **并发执行**：`concurrency` 参数决定同时执行多少个独立任务  
+-3. **延迟间隔**：每个任务会延迟 `idx * request_delay` 秒后提交，避免瞬间同时发送  
+-
+-例如：  
+- **`concurrency = 3`**, **`request_delay = 0.5`**  
+- Task 0: 立即提交
+- Task 1: 延迟 0.5 秒后提交
+- Task 2: 延迟 1.0 秒后提交
+-
+-这样可以避免服务端限流，同时保持并发效率。
+-
+-## 配置文件
+-
+-插件目录内包含 `config.json` 配置文件，可以配置：  
+- **默认 API Key**  
+- **默认 Base URL**  
+- **镜像站列表（mirror_sites）**  
+-
+-如果不需要配置文件，可以直接在节点中填写 `api_key` 和 `base_url`，或选择 `Custom` 镜像站。
+-
+-## OSS 上传（可选）
+-
+-在节点底部启用 `oss_enable_upload`，可将生成的图片（**已放大后的版本，如果开启了放大**）自动上传到阿里云 OSS，并将 OSS URL 回填到：  
+- **`image_urls` / `valid_urls` 输出中**（不再额外单独提供 `urls` 输出插口）。  
+-
+-**必填：**
+- `oss_endpoint`  
+- `oss_access_key_id`  
+- `oss_access_key_secret`  
+- `oss_bucket_name`  
+-
+-**可选：**
+- `oss_object_prefix`  
+- `oss_file_name`  
+- `oss_mime_type`  
+- `oss_use_signed_url`  
+- `oss_signed_url_expire_seconds`  
+- `oss_security_token`  
+-
+-## 注意事项
+-
+- **并发数过高（如 5+）时**，服务端可能会限流导致部分请求变慢或失败  
+- 建议根据服务端能力调整 `concurrency` 和 `request_delay` 参数
+- **启用放大时**，图片会先放大再上传 OSS，请注意带宽和存储占用  
+- 如果不需要放大，推荐将 `upscale_factor` 设为 `1x (不放大)` 以减少资源消耗  
+- 插件完全独立，不依赖任何外部文件或模块（RealESRGAN / Gigapixel AI 为可选增强能力）  
+

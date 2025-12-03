@@ -1,0 +1,28 @@
+{
+    "api_key": "",
+    "base_url": "https://generativelanguage.googleapis.com",
+    "mirror_sites": {
+        "nano-banana官方": {
+            "url": "https://generativelanguage.googleapis.com",
+            "api_key": "",
+            "description": "Google Gemini 官方API"
+        },
+        "comfly": {
+            "url": "https://ai.comfly.chat/v1",
+            "api_key": "",
+            "description": "Comfly 镜像站"
+        },
+        "Comet": {
+            "url": "https://api.cometapi.com",
+            "api_key": "",
+            "description": "CometAPI镜像站，支持Gemini原生接口格式"
+        },
+        "Custom": {
+            "url": "",
+            "api_key": "",
+            "description": "自定义镜像站"
+        }
+    }
+}
+
+

@@ -1,0 +1,352 @@
+{
+  "id": "1b685933-5ba2-46ff-8d95-743246065343",
+  "revision": 0,
+  "last_node_id": 243,
+  "last_link_id": 269,
+  "nodes": [
+    {
+      "id": 235,
+      "type": "LoadImage",
+      "pos": [
+        870,
+        -6570
+      ],
+      "size": [
+        270,
+        314
+      ],
+      "flags": {},
+      "order": 0,
+      "mode": 4,
+      "inputs": [],
+      "outputs": [
+        {
+          "name": "IMAGE",
+          "type": "IMAGE",
+          "links": []
+        },
+        {
+          "name": "MASK",
+          "type": "MASK",
+          "links": null
+        }
+      ],
+      "properties": {
+        "cnr_id": "comfy-core",
+        "ver": "0.3.67",
+        "Node name for S&R": "LoadImage"
+      },
+      "widgets_values": [
+        "高清后.png",
+        "image"
+      ]
+    },
+    {
+      "id": 226,
+      "type": "ShowText|pysssss",
+      "pos": [
+        720,
+        -6120
+      ],
+      "size": [
+        470,
+        280
+      ],
+      "flags": {},
+      "order": 1,
+      "mode": 4,
+      "inputs": [
+        {
+          "name": "text",
+          "type": "STRING",
+          "link": null
+        }
+      ],
+      "outputs": [
+        {
+          "label": "字符串",
+          "name": "STRING",
+          "shape": 6,
+          "type": "STRING",
+          "links": null
+        }
+      ],
+      "properties": {
+        "cnr_id": "comfyui-custom-scripts",
+        "ver": "f2838ed5e59de4d73cde5c98354b87a8d3200190",
+        "Node name for S&R": "ShowText|pysssss"
+      },
+      "widgets_values": []
+    },
+    {
+      "id": 212,
+      "type": "PreviewAny",
+      "pos": [
+        -510,
+        -6960
+      ],
+      "size": [
+        603.6860961914062,
+        353.52569580078125
+      ],
+      "flags": {},
+      "order": 3,
+      "mode": 0,
+      "inputs": [
+        {
+          "label": "source",
+          "name": "source",
+          "type": "*",
+          "link": 261
+        }
+      ],
+      "outputs": [],
+      "properties": {
+        "cnr_id": "comfy-core",
+        "ver": "0.3.67",
+        "Node name for S&R": "PreviewAny",
+        "widget_ue_connectable": {}
+      },
+      "widgets_values": []
+    },
+    {
+      "id": 240,
+      "type": "PreviewAny",
+      "pos": [
+        -10,
+        -6560
+      ],
+      "size": [
+        603.6860961914062,
+        353.52569580078125
+      ],
+      "flags": {},
+      "order": 4,
+      "mode": 0,
+      "inputs": [
+        {
+          "label": "source",
+          "name": "source",
+          "type": "*",
+          "link": 266
+        }
+      ],
+      "outputs": [],
+      "properties": {
+        "cnr_id": "comfy-core",
+        "ver": "0.3.67",
+        "Node name for S&R": "PreviewAny",
+        "widget_ue_connectable": {}
+      },
+      "widgets_values": []
+    },
+    {
+      "id": 241,
+      "type": "PreviewAny",
+      "pos": [
+        0,
+        -6150
+      ],
+      "size": [
+        603.6860961914062,
+        353.52569580078125
+      ],
+      "flags": {},
+      "order": 5,
+      "mode": 0,
+      "inputs": [
+        {
+          "label": "source",
+          "name": "source",
+          "type": "*",
+          "link": 267
+        }
+      ],
+      "outputs": [],
+      "properties": {
+        "cnr_id": "comfy-core",
+        "ver": "0.3.67",
+        "Node name for S&R": "PreviewAny",
+        "widget_ue_connectable": {}
+      },
+      "widgets_values": []
+    },
+    {
+      "id": 243,
+      "type": "SaveImage",
+      "pos": [
+        -1020,
+        -6210
+      ],
+      "size": [
+        680,
+        790
+      ],
+      "flags": {},
+      "order": 6,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "images",
+          "type": "IMAGE",
+          "link": 268
+        }
+      ],
+      "outputs": [],
+      "properties": {
+        "cnr_id": "comfy-core",
+        "ver": "0.3.67"
+      },
+      "widgets_values": [
+        "ComfyUI"
+      ]
+    },
+    {
+      "id": 236,
+      "type": "Banana2Concurrent",
+      "pos": [
+        -1890,
+        -6410
+      ],
+      "size": [
+        700,
+        1370
+      ],
+      "flags": {},
+      "order": 2,
+      "mode": 0,
+      "inputs": [],
+      "outputs": [
+        {
+          "name": "responses",
+          "type": "STRING",
+          "links": null
+        },
+        {
+          "name": "statuses",
+          "type": "STRING",
+          "links": [
+            261
+          ]
+        },
+        {
+          "name": "image_urls",
+          "type": "STRING",
+          "links": [
+            266
+          ]
+        },
+        {
+          "name": "valid_urls",
+          "type": "STRING",
+          "links": [
+            267
+          ]
+        },
+        {
+          "name": "images",
+          "type": "IMAGE",
+          "links": [
+            268
+          ]
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "Banana2Concurrent"
+      },
+      "widgets_values": [
+        "第2张图的泳装，换到第三张图的人身上",
+        "comfly",
+        "",
+        "",
+        "gemini-3-pro-image-preview",
+        "",
+        "Auto",
+        "auto",
+        "TEXT_AND_IMAGE",
+        "Auto",
+        "4K",
+        0.9,
+        0.9,
+        40,
+        2048,
+        1372572307,
+        "randomize",
+        false,
+        "",
+        "image/png",
+        2,
+        0.5,
+        1,
+        300,
+        400,
+        "",
+        "",
+        true,
+        "",
+        "",
+        "",
+        "",
+        "",
+        "",
+        "",
+        false,
+        3600,
+        ""
+      ]
+    }
+  ],
+  "links": [
+    [
+      261,
+      236,
+      1,
+      212,
+      0,
+      "*"
+    ],
+    [
+      266,
+      236,
+      2,
+      240,
+      0,
+      "*"
+    ],
+    [
+      267,
+      236,
+      3,
+      241,
+      0,
+      "*"
+    ],
+    [
+      268,
+      236,
+      4,
+      243,
+      0,
+      "IMAGE"
+    ]
+  ],
+  "groups": [],
+  "config": {},
+  "extra": {
+    "ds": {
+      "scale": 0.4736244074476938,
+      "offset": [
+        2954.5454312817133,
+        6978.982867625988
+      ]
+    },
+    "frontendVersion": "1.28.8",
+    "ue_links": [],
+    "links_added_by_ue": [],
+    "VHS_latentpreview": false,
+    "VHS_latentpreviewrate": 0,
+    "VHS_MetadataImage": true,
+    "VHS_KeepIntermediate": true
+  },
+  "version": 0.4
+}

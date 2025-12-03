@@ -1,0 +1,14 @@
+# Banana2 Concurrent Node 依赖项
+# 注意：ComfyUI 通常已经包含了这些库，如果遇到导入错误才需要安装
+
+# 必需依赖
+requests>=2.25.0
+Pillow>=8.0.0
+
+# 以下库由 ComfyUI 提供，通常不需要单独安装
+# torch
+# numpy
+
+# OSS 上传依赖
+oss2>=2.17.0          # 用于 OSS 上传（启用 OSS 上传时需要）
+
